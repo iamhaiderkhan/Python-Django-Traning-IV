@@ -38,11 +38,3 @@ class UserListView(IsAuthenticateMixin, ListAPIView):
 class UserRetrieveUpdateView(IsAuthenticateMixin, RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserRetrieveUpdateDestroySerializer
-
-
-
-
-
-
-
-
