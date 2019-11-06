@@ -1,0 +1,5 @@
+api/local_settings.py
+.idea
+venv/
+*.pyc
+ .vscode/

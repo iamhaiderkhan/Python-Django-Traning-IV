@@ -1,0 +1,5 @@
+mysqlclient==1.3.13
+Django
+djangorestframework
+djangorestframework-jwt
+requests
