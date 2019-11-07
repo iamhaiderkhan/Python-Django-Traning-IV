@@ -10,7 +10,7 @@ client = Client()
 JSON ='application/json'
 
 
-class CreateNewUserTest(TestCase):
+class SignUpTest(TestCase):
     def setUp(self):
 
         self.valid_signup_payload = {'email': 'haiderkhan.live@gmail.com',
@@ -42,15 +42,46 @@ class CreateNewUserTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-class AllUserListTest(TestCase):
+class LoginTest(TestCase):
+    def setUp(self):
 
+        self.user = User.objects.create_user(username="iamhaiderkhan", password="arbi^./.")
+
+        self.login_valid_payload ={
+            "username": self.user.username,
+            "password": "arbi^./."
+        }
+
+        self.login_invalid_payload = {
+            "username": self.user.username,
+            "password": "arbi^./..d"
+        }
+
+    def test_login_valid_user(self):
+        response = client.post(
+            reverse('login'),
+            data=json.dumps(self.login_valid_payload),
+            content_type=JSON
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_login_invalid_user(self):
+
+        response = client.post(
+            reverse('login'),
+            data=json.dumps(self.login_invalid_payload),
+            content_type=JSON
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class AllUserListTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', email='test@test.com', password='test_@/.^')
         self.payload = api_settings.JWT_PAYLOAD_HANDLER(self.user)
         self.token = api_settings.JWT_ENCODE_HANDLER(self.payload)
         self.headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.token}
-
 
     def test_get_all_user(self):
 
@@ -59,6 +90,7 @@ class AllUserListTest(TestCase):
         serialize = UserSerializer(users, many=True)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class GetUpdateDeleteUserTest(TestCase):
 
@@ -109,7 +141,6 @@ class GetUpdateDeleteUserTest(TestCase):
             **self.headers)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
 
     def test_delete_valid_user(self):
         response = client.delete(

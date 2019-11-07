@@ -30,9 +30,13 @@ class UserSerializerWithJWT(JWTTokenMixin, UserSerializer):
 
 
 class UserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-    email = serializers.CharField(required=True, validators=[
-        UniqueValidator(queryset=User.objects.all(), message="Email is already exist. Please try another email.")]
-                                  )
+    email = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message="Email is already exist. Please try another email.")
+        ]
+    )
 
     class Meta:
         model = User
@@ -40,14 +44,17 @@ class UserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
 
 class NewUserSerializer(UserSerializer):
-    email = serializers.CharField(required=True, validators=[
-        UniqueValidator(queryset=User.objects.all(), message="Email is already exist. Please try another email.")]
+    email = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message="Email is already exist. Please try another email."
+        )]
     )
 
     class Meta(UserSerializer.Meta):
 
-        fields = list(UserSerializer.Meta.fields)
-        fields.remove('full_name')
+        fields = ('id', 'first_name', 'last_name', 'username', 'email', 'password', 'is_staff', 'is_active')
         extra_kwargs = {}
 
     def create(self, validated_data):
