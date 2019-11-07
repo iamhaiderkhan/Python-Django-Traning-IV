@@ -83,8 +83,7 @@ class GetUpdateDeleteUserTest(TestCase):
 
     def test_get_valid_single_user(self):
         response = client.get(reverse('user-get-update-delete', kwargs={'pk': self.user1.pk}), **self.headers)
-        user  = User.objects.get(pk=self.user1.pk)
-        serialize = UserRetrieveUpdateDestroySerializer(user)
+        serialize = UserRetrieveUpdateDestroySerializer(self.user1)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -95,10 +94,11 @@ class GetUpdateDeleteUserTest(TestCase):
     def test_update_valid_user(self):
         response = client.put(
             reverse('user-get-update-delete', kwargs={'pk': self.user2.pk}),
-            data = json.dumps(self.valid_payload),
+            data=json.dumps(self.valid_payload),
             content_type=JSON,
             **self.headers)
-
+        self.assertEqual(self.valid_payload['username'], response.data['username'])
+        self.assertEqual(self.valid_payload['email'], response.data['email'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_invalid_user(self):
