@@ -34,7 +34,6 @@ class SignUpTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_invalid_user(self):
-
         response = client.post(
             reverse('signup'),
             data=json.dumps(self.invalid_signup_payload),
@@ -67,7 +66,6 @@ class LoginTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_login_invalid_user(self):
-
         response = client.post(
             reverse('login'),
             data=json.dumps(self.login_invalid_payload),
@@ -85,7 +83,6 @@ class AllUserListTest(TestCase):
         self.headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.token}
 
     def test_get_all_user(self):
-
         response = client.get(reverse('users-list'), **self.headers)
         users = User.objects.all()
         serialize = UserSerializer(users, many=True)
@@ -140,7 +137,6 @@ class GetUpdateDeleteUserTest(TestCase):
             data = json.dumps(self.invalid_payload),
             content_type=JSON,
             **self.headers)
-
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_valid_user(self):

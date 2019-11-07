@@ -15,7 +15,6 @@ class LoginView(CreateAPIView):
     serializer_class = UserSerializerWithJWT
 
     def post(self, request, *args, **kwargs):
-
         username = request.data.get("username", "")
         password = request.data.get("password", "")
         user = authenticate(request, username=username, password=password)
