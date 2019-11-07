@@ -13,7 +13,8 @@ JSON ='application/json'
 class SignUpTest(TestCase):
     def setUp(self):
 
-        self.valid_signup_payload = {'email': 'haiderkhan.live@gmail.com',
+        self.valid_signup_payload = {
+            'email': 'haiderkhan.live@gmail.com',
             'username': "iamhaiderkhan",
             'password': '4k84u5gfju'
         }
