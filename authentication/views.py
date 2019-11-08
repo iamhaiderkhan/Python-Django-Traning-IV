@@ -22,7 +22,10 @@ class LoginView(CreateAPIView):
             login(request, user)
             serializer = UserSerializerWithJWT(user)
             return Response(serializer.data)
-        return Response(data={"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            data={"error": "Invalid credentials"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 class SignUpView(CreateAPIView):
