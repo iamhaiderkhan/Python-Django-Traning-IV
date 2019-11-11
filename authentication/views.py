@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework import status
 from .serializers import UserSerializer, UserSerializerWithJWT, UserRetrieveUpdateDestroySerializer, NewUserSerializer
 from .mixins import IsAuthenticateMixin
+from django.shortcuts import render
 
 
 # Create your views here.
@@ -40,3 +41,7 @@ class UserListView(IsAuthenticateMixin, ListAPIView):
 class UserRetrieveUpdateView(IsAuthenticateMixin, RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserRetrieveUpdateDestroySerializer
+
+
+def home(request):
+    return render(request, 'home.html')

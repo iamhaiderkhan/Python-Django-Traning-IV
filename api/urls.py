@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from rest_framework_jwt.views import refresh_jwt_token, obtain_jwt_token
+from authentication.views import home
 
 urlpatterns = [
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('obtain_token', obtain_jwt_token, name="obtain-token"),
     path('refresh_token', refresh_jwt_token, name="refresh-token"),
+    path('oauth/', include('social_django.urls', namespace='social')),
+    path('auth/', include('django.contrib.auth.urls')),
     path(settings.API_V1, include('authentication.urls'))
 ]
